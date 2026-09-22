@@ -8,15 +8,15 @@ import { FriendFeed } from './features/feed/FriendFeed'
 import { ShowdownPanel } from './features/showdowns/ShowdownPanel'
 import { Brand } from './components/Brand'
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { SiteNavigation } from './components/SiteNavigation'
+import { ProfilePage } from './features/profile/ProfilePage'
+import { ThemeToggle } from './components/ThemeToggle'
 
 function AppHeader({ canSignOut, onSignOut }: { canSignOut: boolean; onSignOut: () => void }) {
   return <header className="topbar">
     <Link className="brand" to="/" aria-label="WePoop home"><Brand /></Link>
-    <nav className="main-nav" aria-label="Main navigation">
-      <Link to="/">Home</Link>
-      <Link to="/showdowns">Showdowns</Link>
-    </nav>
-    {canSignOut && <button className="text-button" type="button" onClick={onSignOut}>Sign out</button>}
+    <SiteNavigation />
+    <div className="header-actions"><ThemeToggle />{canSignOut && <button className="text-button" type="button" onClick={onSignOut}>Sign out</button>}</div>
   </header>
 }
 
@@ -44,6 +44,7 @@ function AppContent() {
   return <Routes>
     <Route path="/" element={<main className="app-shell">{header}<section className="dashboard" aria-labelledby="welcome-heading"><p className="eyebrow">Your friendly logbook</p><h1 id="welcome-heading">Hi, {profile.username}</h1><p className="lead">Keep the streak moving.</p>{isAnonymous && <AccountSecurity />}<PoopDashboard /><SocialPanel /><FriendFeed /></section></main>} />
     <Route path="/showdowns" element={<main className="app-shell">{header}<section className="dashboard showdown-page"><p className="eyebrow">Private competition</p><h1>Your Showdowns</h1><p className="lead">Create a weekly challenge, invite friends, and follow the standings.</p><ShowdownPanel /></section></main>} />
+    <Route path="/profile" element={<main className="app-shell">{header}<div className="dashboard"><ProfilePage /></div></main>} />
     <Route path="*" element={<Navigate replace to="/" />} />
   </Routes>
 }
